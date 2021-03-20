@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Zora } from "@zoralabs/zdk";
-import { Wallet, providers } from "ethers";
+import { providers } from "ethers";
 import {
   constructBidShares,
   constructMediaData,
@@ -12,13 +12,12 @@ import {
   AppBar,
   Tabs,
   Tab,
-  Typography,
-  Box,
   GridList,
   GridListTile,
   GridListTileBar,
   Button,
 } from "@material-ui/core";
+
 import "./App.css";
 import getWeb3 from "./getWeb3";
 
@@ -30,15 +29,11 @@ function a11yProps(index) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
-const metadataJSON = generateMetadata("zora-20210101", {
-  description: "",
-  mimeType: "text/plain",
-  name: "",
-  version: "zora-20210101",
-});
 
 function App() {
-  const [tab, setTab] = useState(1);
+  const [tab, setTab] = useState(0);
+  const [address, setAddress] = useState("0x");
+  const [balance, setBalance] = useState(null);
 
   useEffect(() => {
     try {
@@ -46,8 +41,13 @@ function App() {
         // Get network provider and web3 instance.
         const web3 = await getWeb3();
         // Use web3 to get the user's accounts.
-        const accounts = await web3.eth.getAccounts();
-        console.log("account: ", accounts);
+        const getAccount = await web3.eth.getAccounts();
+
+        setAddress(getAccount[0]);
+
+        const getBalance = await web3.eth.getBalance(getAccount[0]);
+
+        setBalance(getBalance * 1e-18);
 
         const provider = new providers.Web3Provider(window.ethereum);
 
@@ -72,9 +72,9 @@ function App() {
 
   const renderScreen = () => {
     if (tab === 0) {
-      return renderMarketplace();
-    } else if (tab === 1) {
       return renderCollection();
+    } else if (tab === 1) {
+      return renderMarketplace();
     }
   };
 
@@ -82,7 +82,7 @@ function App() {
     return (
       <GridList
         cellHeight={300}
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: "100%", width: "100%", backgroundColor: "black" }}
         cols={5}
       >
         {marketplaceData.map((nft) => (
@@ -121,7 +121,13 @@ function App() {
     return (
       <GridList
         cellHeight={300}
-        style={{ height: "100%", width: "100%", flex: 1 }}
+        style={{
+          height: "100%",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "black",
+        }}
         cols={5}
       >
         {marketplaceData.map((nft) => (
@@ -156,34 +162,6 @@ function App() {
     );
   };
 
-  const minting = async () => {
-    const provider = new providers.Web3Provider(window.ethereum);
-    const zora = new Zora(provider, 4);
-
-    const contentHash = sha256FromBuffer(Buffer.from("Ours Truly,"));
-    const metadataHash = sha256FromBuffer(Buffer.from(metadataJSON));
-    const mediaData = constructMediaData(
-      "https://ipfs.io/ipfs/bafybeifyqibqlheu7ij7fwdex4y2pw2wo7eaw2z6lec5zhbxu3cvxul6h4",
-      "https://ipfs.io/ipfs/bafybeifpxcq2hhbzuy2ich3duh7cjk4zk4czjl6ufbpmxep247ugwzsny4",
-      contentHash,
-      metadataHash
-    );
-    /**
-     * Note: Before minting, verify that the content stored at the uris
-     * can be hashed and matches the hashes in the `MediaData`.
-     *
-     * Soon, we will ship utility functions to handle this for you.
-     */
-
-    const bidShares = constructBidShares(
-      10, // creator share
-      90, // owner share
-      0 // prevOwner share
-    );
-    const tx = await zora.mint(mediaData, bidShares);
-    await tx.wait(8); // 8 confirmations to finalize
-  };
-
   const getCollection = () => {
     getAddressCollection("0x4153614ec1836e8916020aee69d67a9e1e495dbf").then(
       (res) => {
@@ -202,20 +180,52 @@ function App() {
     //     <button onClick={minting}>Mint cryptomedia</button>
     //     <button onClick={getCollection}>Get Collection</button>
     //   </header>
-    <div className="App" style={{ flex: 1, backgroundColor: "black" }}>
+    <div className="App">
       <AppBar
-        style={{ background: "black", marginBottom: 20 }}
+        style={{
+          backgroundColor: "black",
+          paddingBottom: 40,
+          paddingTop: 40,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
         position="static"
       >
-        <Tabs
-          value={tab}
-          onChange={handleChange}
-          aria-label="simple tabs example"
-        >
-          <Tab label="Marketplace" {...a11yProps(0)} />
-          <Tab label="My Collection" {...a11yProps(1)} />
-          <Tab label="Create NFT" {...a11yProps(2)} />
+        <Tabs value={tab} style={{}} onChange={handleChange} aria-label="Tabs">
+          <Tab
+            style={{
+              fontSize: 24,
+              marginRight: 20,
+              fontFamily: "Helvetica Neue",
+            }}
+            label="My Collection"
+            {...a11yProps(0)}
+          />
+          <Tab
+            style={{
+              fontSize: 24,
+              marginLeft: 20,
+              fontFamily: "Helvetica Neue",
+            }}
+            label="Marketplace"
+            {...a11yProps(1)}
+          />
         </Tabs>
+        <div
+          style={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            textAlign: "right",
+          }}
+        >
+          {/* <i className="material-icons">account_balance_wallet</i> */}
+
+          <div className="myAccountBox">
+            <div className="address">Address: {address}</div>
+            <div className="eth"> ETH: {balance} </div>
+          </div>
+        </div>
       </AppBar>
       {renderScreen()}
     </div>
