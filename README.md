@@ -1,18 +1,9 @@
-# Project Title
+# Project Title - ownft
 
-ownft
+## Description
 
-## Getting Started
+Hardware wallet for NFT that enables you to truly own and showcase your art with hosted IPFS node
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
 
 ### Installing
 
@@ -32,25 +23,7 @@ until finished
 
 End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
 
 ## Deployment
 
@@ -72,7 +45,11 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Alex Matson** - [alexmat2on](https://github.com/alexmat2on)
+* **Kartikeya Sharma** - [sha256rma](https://github.com/sha256rma)
+* **Denny Liang** - [denny999222](https://github.com/denny999222)
+* **taehun lim** - [kevtae](https://github.com/kevtae)
+
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
@@ -82,6 +59,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Part of [NFTHACK hackathon](https://hack.ethglobal.co/showcase/ownft-rec5dwI2zHRi0RAss)
