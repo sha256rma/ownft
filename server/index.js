@@ -21,7 +21,8 @@ app.post('/add', async (req, res) => {
             const { cid } = await ipfs.add(nftfile.data);
             res.send({
                 message: `Successfully added file to ipfs`,
-                cid
+                cidv1: cid.toV1(),
+                cidv0: cid.toV0()
             })
         }
     } catch (e) {
