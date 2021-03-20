@@ -22,6 +22,8 @@ import {
 import "./App.css";
 import getWeb3 from "./getWeb3";
 
+import { getAddressCollection } from "./api/media";
+
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -51,14 +53,9 @@ function App() {
 
         console.log(provider);
 
-        const wallet = Wallet.createRandom();
         const zora = new Zora(provider, 4);
 
         console.log("zora", zora);
-
-        const media = await zora.fetchTotalMedia();
-
-        console.log("media: ", media);
       })();
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -187,7 +184,24 @@ function App() {
     await tx.wait(8); // 8 confirmations to finalize
   };
 
+  const getCollection = () => {
+    getAddressCollection("0x4153614ec1836e8916020aee69d67a9e1e495dbf").then(
+      (res) => {
+        console.log("res: ", res);
+      }
+    );
+  };
+
   return (
+    // <div className="App">
+    //   <header className="App-header">
+    //     <img src={logo} className="App-logo" alt="logo" />
+    //     <p>
+    //       Edit <code>src/App.js</code> and save to reload.
+    //     </p>
+    //     <button onClick={minting}>Mint cryptomedia</button>
+    //     <button onClick={getCollection}>Get Collection</button>
+    //   </header>
     <div className="App" style={{ flex: 1, backgroundColor: "black" }}>
       <AppBar
         style={{ background: "black", marginBottom: 20 }}
