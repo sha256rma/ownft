@@ -1,5 +1,4 @@
 .App {
-  text-align: center;
 }
 
 .App-logo {
@@ -26,6 +25,24 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.rightNav {
+  margin: 0px;
+  display: flex;
+  align-items: center;
+}
+
+.rightNav > .material-icons {
+  font-size: 60px;
+  margin-right: 2px;
+  opacity: 0.8;
+}
+
+.myAccountBox > .address,
+.eth,
+.dctoken {
+  font-size: 12px;
 }
 
 @keyframes App-logo-spin {
