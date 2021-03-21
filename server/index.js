@@ -37,6 +37,9 @@ app.post("/add", async (req, res) => {
 
 app.post("/pin/:cid", async (req, res) => {
   try {
+    const cid = new CID(req.params.cid);
+    CID.validateCID(cid);
+
     await ipfs.pin.add(new CID(req.params.cid));
     res.send({ success: true });
   } catch (e) {
@@ -65,7 +68,7 @@ app.post("/get_user_collections", async (req, res) => {
           }`,
       variables: {},
     });
-
+    
     var config = {
       method: "post",
       url: "https://api.thegraph.com/subgraphs/name/ourzora/zora-v1",
@@ -74,11 +77,20 @@ app.post("/get_user_collections", async (req, res) => {
 
     await axios(config)
       .then(function (response) {
+        response.data.data.user.collection.map(media => {
+            const { contentURI } = media; 
+            const maybeCid = new CID(contentURI.split("/").pop());
+            try {
+                CID.validateCID(maybeCid);
+                ipfs.pin.add(maybeCid);
+            } catch (e) {
+                console.warn(`CID ${maybeCid} is not a valid CID`);
+            }
+        })
         res.send({
-          message: "Successfully fetched NFTs",
+          message: "Successfully fetched & pinned NFTs",
           data: JSON.stringify(response.data),
         });
-        // console.log(JSON.stringify(response.data));
       })
       .catch(function (error) {
         console.log("ERROR: ", error);
@@ -91,7 +103,7 @@ app.post("/get_user_collections", async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3002;
 
 app.listen(port, () => {
   console.log(`App is listening on port ${port}.`);
