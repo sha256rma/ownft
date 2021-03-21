@@ -327,17 +327,24 @@ const marketplaceData = [
     cost: 0.56,
   },
   {
-    ownerAddress: "0x4d4f3a34293fe7d32974fdde1248e8b6f52bdc66",
-    ownerUsername: "OArts.it",
-    creatorAddress: "0xd387a6e4e84a6c86bd90c158c6028a58cc8ac459",
-    creatorUsername: "Pranksy",
-    collectionAddress: "0xd07dc4262bcdbf85190c01c996b4c06a461d2430",
-    collectionUsername: "Rarible",
-    image:
-      "https://i.pinimg.com/736x/85/dd/bc/85ddbc7ee50d1a0aaef6dde432edd58a.jpg",
-    name: "Mother Nature",
-    cost: 2.1,
+    data: {
+      user: {
+        collection: [
+          {
+            contentURI:
+              "https://ipfs.fleek.co/ipfs/bafybeiflgb6o7m6hyj7qethlsjmkzmorug2bwkeglrf3qexl54mgz2dmbe",
+            createdAtTimestamp: "1616190458",
+            creator: { id: "0x4153614ec1836e8916020aee69d67a9e1e495dbf" },
+            id: "2335",
+            metadataURI:
+              "https://ipfs.fleek.co/ipfs/bafybeidh3ulflblijfokbajig54sntinymboufmhnkf5rzr45zaejg4maa",
+          },
+        ],
+        id: "0x4153614ec1836e8916020aee69d67a9e1e495dbf",
+      },
+    },
   },
+
   {
     ownerAddress: "0x4d4f3a34293fe7d32974fdde1248e8b6f52bdc66",
     ownerUsername: "OArts.it",
