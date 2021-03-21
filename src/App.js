@@ -18,9 +18,11 @@ import {
   GridListTile,
   GridListTileBar,
   Button,
+  TextField,
 } from "@material-ui/core";
 import "./App.css";
 import getWeb3 from "./getWeb3";
+import ImageUploader from "react-images-upload";
 
 function a11yProps(index) {
   return {
@@ -37,6 +39,10 @@ const metadataJSON = generateMetadata("zora-20210101", {
 
 function App() {
   const [tab, setTab] = useState(1);
+  const [files, setFiles] = useState([]);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
 
   useEffect(() => {
     try {
@@ -75,49 +81,10 @@ function App() {
 
   const renderScreen = () => {
     if (tab === 0) {
-      return renderMarketplace();
-    } else if (tab === 1) {
       return renderCollection();
+    } else if (tab === 1) {
+      return renderCreate();
     }
-  };
-
-  const renderMarketplace = () => {
-    return (
-      <GridList
-        cellHeight={300}
-        style={{ height: "100%", width: "100%" }}
-        cols={5}
-      >
-        {marketplaceData.map((nft) => (
-          <GridListTile
-            style={{
-              height: 300,
-              width: "19%",
-              margin: ".5%",
-              border: "0.5px solid white",
-              borderRadius: 10,
-              padding: 10,
-            }}
-            key={nft.img}
-            cols={1}
-          >
-            <img
-              style={{ height: 180, width: "100%", borderRadius: 10 }}
-              src={nft.image}
-              alt={nft.name}
-            />
-            <Button variant="outlined" color="primary">
-              Purchase
-            </Button>
-            <GridListTileBar
-              style={{ height: 40 }}
-              title={nft.name}
-              subtitle={`${nft.cost} ETH`}
-            />
-          </GridListTile>
-        ))}
-      </GridList>
-    );
   };
 
   const renderCollection = () => {
@@ -129,6 +96,7 @@ function App() {
       >
         {marketplaceData.map((nft) => (
           <div
+            onClick={() => null}
             style={{
               height: 220,
               width: "17%",
@@ -156,6 +124,86 @@ function App() {
           </div>
         ))}
       </GridList>
+    );
+  };
+
+  const onUploadFile = () => {};
+
+  const renderCreate = () => {
+    return (
+      <Box
+        style={{
+          flex: 1,
+          height: 2000,
+          backgoundColor: "white",
+          paddingLeft: 150,
+          paddingRight: 150,
+        }}
+      >
+        <Typography style={{ marginBottom: 20, color: "white" }} variant="h4">
+          Create a collectible
+        </Typography>
+        <Box m={1} p={2} style={{ border: "1px solid white" }}>
+          <Typography style={{ marginBottom: 20, color: "white" }} variant="h6">
+            Upload a File
+          </Typography>
+          <ImageUploader
+            withPreview
+            withIcon={true}
+            singleImage
+            buttonText="Upload File"
+            onChange={(pictureFiles, pictureDataURLs) => setFiles(pictureFiles)}
+            imgExtension={[".jpg", ".gif", ".png"]}
+            maxFileSize={5242880}
+          />
+        </Box>
+
+        <Box m={1} p={1} style={{ marginTop: 50 }}>
+          <Typography style={{ marginBottom: 20, color: "white" }} variant="h6">
+            Details
+          </Typography>
+          <Box
+            p={2}
+            style={{ backgroundColor: "white", border: "1px solid white" }}
+          >
+            <TextField
+              style={{ marginRight: 10 }}
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              id="name"
+              label="Name"
+              variant="outlined"
+              color="secondary"
+            />
+            <TextField
+              style={{ marginRight: 10 }}
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              id="description"
+              label="Description"
+              variant="outlined"
+              color="secondary"
+            />
+            <TextField
+              style={{ marginRight: 10 }}
+              value={price}
+              onChange={(event) => setPrice(event.target.value)}
+              id="price"
+              label="Price"
+              variant="outlined"
+              color="secondary"
+            />
+          </Box>
+          <Button
+            onPress={() => console.log("create nft")}
+            style={{ marginTop: 30, width: "100%" }}
+            variant="contained"
+            color="secondary"
+          >
+            Create
+          </Button>
+        </Box>
+      </Box>
     );
   };
 
@@ -198,11 +246,23 @@ function App() {
           onChange={handleChange}
           aria-label="simple tabs example"
         >
-          <Tab label="Marketplace" {...a11yProps(0)} />
-          <Tab label="My Collection" {...a11yProps(1)} />
-          <Tab label="Create NFT" {...a11yProps(2)} />
+          <Tab label="My Collection" {...a11yProps(0)} />
+          <Tab label="Create NFT" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
+
+      {tab === 1 ? null : (
+        <Button
+          onPress={() => console.log("fetch the most updated")}
+          style={{ backgroundColor: "white", marginBottom: 15 }}
+          variant="outlined"
+          color="white"
+          icon="refresh"
+        >
+          Refresh
+        </Button>
+      )}
+
       {renderScreen()}
     </div>
   );
